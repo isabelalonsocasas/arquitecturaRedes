@@ -40,38 +40,6 @@ Las vecindades entre sistemas autónomos son **A–B, A–C, B–C y C–D**. El
 | **AS C** | RIPv2 | LAN públicas, enlaces internos privados, red Wi-Fi con DHCP y desactivación de la sumarización automática. |
 | **AS D** | Rutas estáticas | Router frontera, router interno y una interfaz loopback que representa la red `221.0.0.0/16`. |
 
-### Direccionamiento y segmentación
-
-Los bloques agregados principales documentados para los AS son:
-
-| Sistema | Bloque principal |
-| --- | --- |
-| AS A | `128.0.0.0/16` |
-| AS B | `200.0.0.0/17` |
-| AS C | `201.0.0.0/17` |
-| AS D | `221.0.0.0/16` |
-
-En el AS A, las VLAN 2, 3, 4 y 5 corresponden a los cuatro departamentos y utilizan respectivamente `128.0.0.0/24`, `128.0.1.0/24`, `128.0.2.0/24` y `128.0.3.0/24`. El encaminamiento entre ellas se realiza mediante subinterfaces con encapsulación **802.1Q**.
-
-El AS C utiliza direccionamiento privado `10.0.0.0` en los enlaces internos y `192.168.0.0/24` para la red inalámbrica. Las tablas completas de redes, máscaras, interfaces y gateways se encuentran en la memoria.
-
-### Políticas de filtrado
-
-- **AS A:** el Departamento 1 mantiene comunicación con los demás departamentos y tiene restringida la salida al exterior a HTTP y HTTPS.
-- **AS B:** se permite la entrada desde el exterior a los servicios HTTP y Telnet de la empresa; el resto del tráfico entrante se bloquea mediante ACL.
-
-Estas políticas forman parte de los requisitos del ejercicio. Un `ping` bloqueado por una ACL no implica por sí solo un fallo de encaminamiento.
-
-## Tecnologías y competencias
-
-- **Cisco Packet Tracer** y configuración de dispositivos mediante **Cisco IOS**.
-- **eBGP** para la interconexión entre sistemas autónomos.
-- **OSPF, RIPv1, RIPv2 y rutas estáticas** para el encaminamiento interno.
-- **IPv4, subnetting, VLSM y CIDR** para planificar el direccionamiento.
-- **VLAN, enlaces troncales 802.1Q y Router-on-a-Stick**.
-- **ACL extendidas** para filtrar por origen, destino, protocolo y puerto.
-- **Wi-Fi y DHCP**, junto con servicios HTTP y Telnet para las pruebas del laboratorio.
-- Diagnóstico mediante tablas de rutas, comprobación de vecinos y pruebas de conectividad.
 
 ## Archivos del repositorio
 
@@ -81,45 +49,6 @@ Estas políticas forman parte de los requisitos del ejercicio. Un `ping` bloquea
 | [`memoria-redes.pdf`](memoria-redes.pdf) | Memoria original de 52 páginas: requisitos, diseño, direccionamiento, implementación, verificaciones y configuraciones de los dispositivos. |
 | [`docs/`](docs/) | Diagramas de la topología general y de cada AS, extraídos de la memoria. |
 
-## Cómo abrir la práctica
-
-### Requisito
-
-Tener **Cisco Packet Tracer** instalado.
-
-### Pasos
-
-1. Descarga el repositorio desde **Code → Download ZIP** y descomprímelo.
-2. Abre Cisco Packet Tracer.
-3. Selecciona **File → Open** y abre **`practica_definitiva.pkt`**.
-4. Deja que los protocolos de encaminamiento converjan antes de realizar las pruebas.
-5. Consulta la memoria para revisar el direccionamiento, las configuraciones y las restricciones esperadas.
-
-El archivo `.pkt` se abre con Packet Tracer; la simulación no se ejecuta en la página de GitHub.
-
-## Verificaciones documentadas
-
-La memoria describe pruebas de conectividad interna, comunicación entre AS, acceso a la loopback del AS D y comprobaciones de las restricciones de tráfico de los AS A y B.
-
-Desde la pestaña **CLI** de los routers se pueden consultar, según el dispositivo, los siguientes comandos:
-
-```text
-show ip interface brief
-show ip route
-show ip protocols
-show ip bgp summary
-show access-lists
-```
-
-| Comprobación | Qué revisar |
-| --- | --- |
-| Interfaces | Direcciones IP, máscaras y estado de los enlaces. |
-| Encaminamiento interno | Aprendizaje de rutas mediante el protocolo correspondiente a cada AS. |
-| eBGP | Vecinos activos y prefijos recibidos entre routers frontera. |
-| Conectividad | Pruebas `ping`, HTTP y Telnet en los casos permitidos por las ACL. |
-| Filtrado | Accesos autorizados y bloqueos previstos en los AS A y B. |
-
-Las configuraciones por dispositivo y los comandos utilizados durante la implementación están recogidos en el **anexo de la memoria**.
 
 ## Diagramas por sistema autónomo
 
